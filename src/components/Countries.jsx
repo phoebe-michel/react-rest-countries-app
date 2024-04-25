@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { FaMagnifyingGlass, FaChevronDown } from "react-icons/fa6";
 import Country from "./Country";
+import { Link } from "react-router-dom";
 
 const Countries = () => {
   const [countries, setCountries] = useState([]);
@@ -62,7 +63,12 @@ const Countries = () => {
         <div className="px-10 xl:px-0">
           <div className="md:text-sm xl:text-lg grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-12 2xl:gap-20">
             {countries.map((country) => (
-              <Country key={country.id} country={country}></Country>
+              <Link
+                key={country.alpha3Code}
+                to={`/countries/${country.alpha3Code}`}
+              >
+                <Country country={country}></Country>
+              </Link>
             ))}
           </div>
         </div>
