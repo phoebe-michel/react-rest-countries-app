@@ -1,8 +1,8 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import RootLayout from "./routes/RootLayout";
-import Countries from "./components/Countries";
+import Countries, { countriesLoader } from "./components/Countries";
 import NotFoundPage from "./routes/NotFound";
-import CountryDetails from "./routes/CountryDetails";
+import CountryDetails, { countryLoader } from "./routes/CountryDetails";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -14,10 +14,12 @@ const App = () => {
         {
           path: "",
           element: <Countries />,
+          loader: countriesLoader,
         },
         {
           path: "countries/:countryCode",
           element: <CountryDetails />,
+          loader: countryLoader,
         },
       ],
     },

@@ -1,28 +1,12 @@
 import { useState, useEffect } from "react";
 import { FaMagnifyingGlass, FaChevronDown } from "react-icons/fa6";
 import Country from "./Country";
-import { Link } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
+import axios from "axios";
 
 const Countries = () => {
-  const [countries, setCountries] = useState([]);
-  // const [loading, setLoading] = useState(true);
+  const countries = useLoaderData();
 
-  useEffect(() => {
-    const fetchCountries = async () => {
-      const apiUrl = "/data.json";
-      try {
-        const res = await fetch(apiUrl);
-        const data = await res.json();
-        setCountries(data);
-      } catch (error) {
-        console.log("Error fetching data", error);
-      } finally {
-        // setLoading(false);
-      }
-    };
-
-    fetchCountries();
-  }, []);
   return (
     <section className="container-xl xl:container countries-section min-w-[320px] max-w-[1440px] w-full m-auto">
       {/* Search | Filter Countries */}
@@ -62,13 +46,11 @@ const Countries = () => {
       <section className="countries">
         <div className="px-10 xl:px-0">
           <div className="md:text-sm xl:text-lg grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-12 2xl:gap-20">
-            {countries.map((country) => (
-              <Link
-                key={country.alpha3Code}
-                to={`/countries/${country.alpha3Code}`}
-              >
+            {countries.map((country, index) => (
+              <Link key={index} to={`/countries/${country.cca3}`}>
                 <Country country={country}></Country>
               </Link>
+              // <p key={country.cca3}>{country.name}</p>
             ))}
           </div>
         </div>
@@ -77,4 +59,17 @@ const Countries = () => {
   );
 };
 
-export default Countries;
+const countriesLoader = async () => {
+  const apiUrl = "https://restcountries.com/v3.1/all";
+  try {
+    const res = await axios.get(apiUrl);
+    const data = res.data;
+    return data;
+  } catch (error) {
+    console.error("Error fetching data", error);
+  } finally {
+    // setLoading(false);
+  }
+};
+
+export { Countries as default, countriesLoader };

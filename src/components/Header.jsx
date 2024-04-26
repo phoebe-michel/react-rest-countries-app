@@ -6,7 +6,7 @@ const Header = () => {
     <header className="px-4 py-7 md:px-12 shadow-md shadow-gray-200">
       <div className="container-xl xl:container flex flex-row justify-between items-center max-w-[1440px] m-auto">
         <Link to="/">
-          <h3 className="text-base md:text-lg xl:text-lg font-semibold">
+          <h3 className="text-base md:text-lg lg:text-xl xl:text-2xl font-semibold">
             Where in the world?
           </h3>
         </Link>

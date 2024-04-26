@@ -5,11 +5,11 @@ const Country = ({ country }) => {
         <img
           src={country.flags.png}
           className="rounded-t-md h-full w-full"
-          alt=""
+          alt={`The ${country.name.common} Flag`}
         />
       </div>
       <div className="px-7 py-4">
-        <h2 className="font-extrabold text-lg my-5">{country.name}</h2>
+        <h2 className="font-extrabold text-lg my-5">{country.name.common}</h2>
 
         <div className="card-details space-y-1 pt-1">
           <div>
