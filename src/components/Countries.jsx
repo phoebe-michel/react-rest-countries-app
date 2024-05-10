@@ -16,12 +16,16 @@ const Countries = () => {
   }
 
   // Filter countries by name
-  let filteredCountries = countries.filter((country) =>
-    country["name"].toLowerCase().includes(searchInput)
+  let filteredCountries = countries.filter(
+    (country) =>
+      country["name"].toLowerCase().includes(searchInput) &&
+      country["region"].includes(selectedRegion)
   );
 
   let handleRegionDropdownSelect = (region) => {
-    setSelectedRegion(region);
+    if (selectedRegion != region) {
+      setSelectedRegion(region);
+    } else setSelectedRegion("");
     setIsRegionDropdownVisible(false);
   };
 
@@ -46,10 +50,9 @@ const Countries = () => {
             />
           </div>
         </section>
-        <p>{searchInput}</p>
         {/* Filter Dropdown */}
         <section className="filter-by-region text-xs md:text-base relative w-3/5 my-10 md:w-2/4 lg:w-1/5">
-          <div
+          <button
             onClick={() =>
               setIsRegionDropdownVisible((prevState) => !prevState)
             }
@@ -57,7 +60,7 @@ const Countries = () => {
           >
             <span>{selectedRegion ? selectedRegion : "Filter by Region"}</span>
             <FaChevronDown size={8} />
-          </div>
+          </button>
           {isRegionDropdownVisible ? (
             <ul className="absolute z-10 py-2.5 w-full select-options hover:cursor-pointer bg-white rounded-md shadow-md shadow-neutral-200">
               {listOfRegions.map((region, index) => (
