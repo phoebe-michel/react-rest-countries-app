@@ -6,9 +6,10 @@ import { useState } from "react";
 
 const Countries = () => {
   const countries = useLoaderData();
-  const [isVisible, setIsVisible] = useState(false);
+  const [isRegionDropdownVisible, setIsRegionDropdownVisible] = useState(false);
   const [searchInput, setSearchInput] = useState("");
-  const [region, setRegion] = useState("");
+  const [selectedRegion, setSelectedRegion] = useState("");
+  const listOfRegions = ["Africa", "America", "Asia", "Europe", "Oceania"];
 
   function handleSearchInputChange(e) {
     setSearchInput(e.target.value);
@@ -18,6 +19,11 @@ const Countries = () => {
   let filteredCountries = countries.filter((country) =>
     country["name"].toLowerCase().includes(searchInput)
   );
+
+  let handleRegionDropdownSelect = (region) => {
+    setSelectedRegion(region);
+    setIsRegionDropdownVisible(false);
+  };
 
   return (
     <section className="container-xl xl:container countries-section min-w-[320px] max-w-[1440px] w-full m-auto">
@@ -43,30 +49,26 @@ const Countries = () => {
         <p>{searchInput}</p>
         {/* Filter Dropdown */}
         <section className="filter-by-region text-xs md:text-base relative w-3/5 my-10 md:w-2/4 lg:w-1/5">
-          <button
-            onClick={() => setIsVisible((prevState) => !prevState)}
+          <div
+            onClick={() =>
+              setIsRegionDropdownVisible((prevState) => !prevState)
+            }
             className="selected-region bg-white mb-1 py-4 px-5 flex justify-between items-center w-full border border-none rounded-md shadow-md shadow-neutral-200"
           >
-            <span>{region ? region : "Filter by Region"}</span>
+            <span>{selectedRegion ? selectedRegion : "Filter by Region"}</span>
             <FaChevronDown size={8} />
-          </button>
-          {isVisible ? (
+          </div>
+          {isRegionDropdownVisible ? (
             <ul className="absolute z-10 py-2.5 w-full select-options hover:cursor-pointer bg-white rounded-md shadow-md shadow-neutral-200">
-              <li className="option py-1.5 hover:bg-gray-100">
-                <a className="px-5">Africa</a>
-              </li>
-              <li className="option py-1.5 hover:bg-gray-100">
-                <a className="px-5">America</a>
-              </li>
-              <li className="option py-1.5 hover:bg-gray-100">
-                <a className="px-5">Asia</a>
-              </li>
-              <li className="option py-1.5 hover:bg-gray-100">
-                <a className="px-5">Europe</a>
-              </li>
-              <li className="option py-1.5 hover:bg-gray-100">
-                <a className="px-5">Oceania</a>
-              </li>
+              {listOfRegions.map((region, index) => (
+                <li
+                  key={index}
+                  onClick={() => handleRegionDropdownSelect(region)}
+                  className="option py-1.5 hover:bg-gray-100"
+                >
+                  <a className="px-5">{region}</a>
+                </li>
+              ))}
             </ul>
           ) : null}
         </section>
