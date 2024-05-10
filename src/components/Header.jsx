@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 
 const Header = () => {
   return (
-    <header className="px-4 py-7 md:px-12 shadow-md shadow-gray-200">
-      <div className="container-xl xl:container flex flex-row justify-between items-center max-w-[1440px] m-auto">
+    <header className="py-7 md:py-5 shadow-md shadow-gray-200">
+      <div className="container-xl xl:container flex flex-row justify-between items-center max-w-[1440px] w-11/12 m-auto">
         <Link to="/">
           <h3 className="text-base md:text-lg lg:text-xl xl:text-2xl font-semibold">
             Where in the world?

@@ -3,13 +3,13 @@ const Country = ({ country }) => {
     <div className="bg-white flex flex-col basis-full w-full h-full max-w-80 m-auto rounded-md shadow-lg shadow-zinc-300">
       <div className="h-2/5">
         <img
-          src={country.flags.png}
+          src={country.flagImgUrl}
           className="rounded-t-md h-full w-full"
-          alt={`The ${country.name.common} Flag`}
+          alt=""
         />
       </div>
       <div className="px-7 py-4">
-        <h2 className="font-extrabold text-lg my-5">{country.name.common}</h2>
+        <h2 className="font-extrabold text-lg my-5">{country.name}</h2>
 
         <div className="card-details space-y-1 pt-1">
           <div>

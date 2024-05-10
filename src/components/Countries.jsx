@@ -1,11 +1,23 @@
-import { useState, useEffect } from "react";
 import { FaMagnifyingGlass, FaChevronDown } from "react-icons/fa6";
 import Country from "./Country";
 import { Link, useLoaderData } from "react-router-dom";
-import axios from "axios";
+import { getCountries } from "../countries";
+import { useState } from "react";
 
 const Countries = () => {
   const countries = useLoaderData();
+  const [isVisible, setIsVisible] = useState(false);
+  const [searchInput, setSearchInput] = useState("");
+  const [region, setRegion] = useState("");
+
+  function handleSearchInputChange(e) {
+    setSearchInput(e.target.value);
+  }
+
+  // Filter countries by name
+  let filteredCountries = countries.filter((country) =>
+    country["name"].toLowerCase().includes(searchInput)
+  );
 
   return (
     <section className="container-xl xl:container countries-section min-w-[320px] max-w-[1440px] w-full m-auto">
@@ -23,22 +35,40 @@ const Countries = () => {
               placeholder="Search for a country..."
               type="search"
               name="search"
+              value={searchInput}
+              onChange={handleSearchInputChange}
             />
           </div>
         </section>
+        <p>{searchInput}</p>
         {/* Filter Dropdown */}
         <section className="filter-by-region text-xs md:text-base relative w-3/5 my-10 md:w-2/4 lg:w-1/5">
-          <div className="selected-region bg-white mb-1 py-4 px-5 flex justify-between items-center w-full border border-none rounded-md shadow-md shadow-neutral-200">
-            <span>Filter by Region</span>
+          <button
+            onClick={() => setIsVisible((prevState) => !prevState)}
+            className="selected-region bg-white mb-1 py-4 px-5 flex justify-between items-center w-full border border-none rounded-md shadow-md shadow-neutral-200"
+          >
+            <span>{region ? region : "Filter by Region"}</span>
             <FaChevronDown size={8} />
-          </div>
-          <ul className="hidden absolute z-10 w-full select-options py-4 px-5 space-y-1.5 bg-white rounded-md shadow-md shadow-neutral-200">
-            <li className="option">Africa</li>
-            <li className="option">America</li>
-            <li className="option">Asia</li>
-            <li className="option">Europe</li>
-            <li className="option">Oceania</li>
-          </ul>
+          </button>
+          {isVisible ? (
+            <ul className="absolute z-10 py-2.5 w-full select-options hover:cursor-pointer bg-white rounded-md shadow-md shadow-neutral-200">
+              <li className="option py-1.5 hover:bg-gray-100">
+                <a className="px-5">Africa</a>
+              </li>
+              <li className="option py-1.5 hover:bg-gray-100">
+                <a className="px-5">America</a>
+              </li>
+              <li className="option py-1.5 hover:bg-gray-100">
+                <a className="px-5">Asia</a>
+              </li>
+              <li className="option py-1.5 hover:bg-gray-100">
+                <a className="px-5">Europe</a>
+              </li>
+              <li className="option py-1.5 hover:bg-gray-100">
+                <a className="px-5">Oceania</a>
+              </li>
+            </ul>
+          ) : null}
         </section>
       </div>
 
@@ -46,11 +76,10 @@ const Countries = () => {
       <section className="countries">
         <div className="px-10 xl:px-0">
           <div className="md:text-sm xl:text-lg grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-12 2xl:gap-20">
-            {countries.map((country, index) => (
-              <Link key={index} to={`/countries/${country.cca3}`}>
+            {filteredCountries.map((country, index) => (
+              <Link key={index} to={`/countries/${country.alpha3Code}`}>
                 <Country country={country}></Country>
               </Link>
-              // <p key={country.cca3}>{country.name}</p>
             ))}
           </div>
         </div>
@@ -60,11 +89,24 @@ const Countries = () => {
 };
 
 const countriesLoader = async () => {
-  const apiUrl = "https://restcountries.com/v3.1/all";
   try {
-    const res = await axios.get(apiUrl);
-    const data = res.data;
-    return data;
+    //const apiUrl = "https://restcountries.com/v3.1/all";
+    const data = await getCountries();
+
+    const countries = data.map(
+      ({ alpha3Code, population, region, capital, name, flags }) => {
+        const { png: flagImgUrl } = flags;
+        return {
+          alpha3Code,
+          population,
+          region,
+          capital,
+          name,
+          flagImgUrl,
+        };
+      }
+    );
+    return countries;
   } catch (error) {
     console.error("Error fetching data", error);
   } finally {
