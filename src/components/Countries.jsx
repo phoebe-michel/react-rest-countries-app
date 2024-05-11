@@ -30,7 +30,7 @@ const Countries = () => {
   };
 
   return (
-    <section className="container-xl xl:container countries-section min-w-[320px] max-w-[1440px] w-full m-auto">
+    <section className="container-xl countries-section min-w-[320px] max-w-[1440px] w-full m-auto">
       {/* Search | Filter Countries */}
       <div className="search-filter-section m-auto my-6 lg:my-0 px-4 md:px-10 xl:px-0 text-blue-980 lg:flex items-center justify-between">
         {/* Search Input */}

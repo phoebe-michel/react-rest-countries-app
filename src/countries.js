@@ -38,12 +38,14 @@ export async function getCountry(id) {
     });
     const languages = languagesArr.join(", ");
 
-    let borderCountries = borders.map((borderCountry) => {
-      const country = countries.find(
-        (country) => country.alpha3Code === borderCountry
-      );
-      return country.name;
-    });
+    let borderCountries = borders
+      ? borders.map((borderCountry) => {
+          const country = countries.find(
+            (country) => country.alpha3Code === borderCountry
+          );
+          return country.name;
+        })
+      : null;
 
     return {
       flag,
